@@ -9,15 +9,16 @@ import streamlit as st
 
 from utils import (
     BLUE,
-    GREEN,
     GREY,
     LIGHT_GREY,
     NAVY,
     YOUTUBE_RED,
     clean_figure,
+    decision_callout,
     format_integer,
     format_pct,
     global_snapshot,
+    inject_global_styles,
     load_data,
     page_footer,
     sidebar_filters,
@@ -29,17 +30,7 @@ st.set_page_config(
     page_icon="▶️",
     layout="wide",
 )
-
-st.markdown(
-    """
-    <style>
-    .block-container {padding-top: 2rem; padding-bottom: 2rem;}
-    [data-testid="stMetric"] {background:#F6F8FB; border:1px solid #E7EBF0; padding:14px; border-radius:10px;}
-    h1, h2, h3 {color:#18212F;}
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
+inject_global_styles()
 
 
 def duration_tab(data: pd.DataFrame) -> None:
@@ -57,7 +48,8 @@ def duration_tab(data: pd.DataFrame) -> None:
 
     c1, c2, c3 = st.columns(3)
     c1.metric("Tendances d’un seul jour", format_pct(one_day), help="Couples pays + vidéo")
-    c2.metric("Durée médiane", f"{median_days:.0f} jour(s)")
+    median_label = "jour" if median_days == 1 else "jours"
+    c2.metric("Durée médiane", f"{median_days:.0f} {median_label}")
     c3.metric("Présence ≥ 7 jours", format_pct(seven_plus))
 
     fig = go.Figure()
@@ -71,12 +63,13 @@ def duration_tab(data: pd.DataFrame) -> None:
             marker_color=color,
             text=f"{row.part:.1f} %".replace(".", ","),
             textposition="inside",
+            insidetextfont=dict(color="white" if color in {YOUTUBE_RED, "#8590A2"} else NAVY),
             hovertemplate=f"{row.durée}<br>{row.vidéos:,} vidéos<br>{row.part:.1f} %<extra></extra>".replace(",", " "),
         )
     fig.update_layout(barmode="stack", xaxis=dict(range=[0, 100], title="Part des couples pays–vidéo (%)"))
     clean_figure(fig, height=330)
     st.plotly_chart(fig, width="stretch", config={"displayModeBar": False})
-    st.success("Décision : concentrer la promotion dans les 24 premières heures, puis réallouer rapidement si la vidéo ne décolle pas.")
+    decision_callout("Concentrer la promotion dans les 24 premières heures, puis réallouer rapidement si la vidéo ne décolle pas.")
 
 
 def music_tab(data: pd.DataFrame) -> None:
@@ -90,7 +83,7 @@ def music_tab(data: pd.DataFrame) -> None:
 
     c1, c2, c3 = st.columns(3)
     c1.metric("Seuil du top 1 %", f"{format_integer(threshold)} vues")
-    c2.metric("Musique dans le top 1 %", format_pct(share_top), delta=f"{share_top-share_all:+.1f} pts")
+    c2.metric("Musique dans le top 1 %", format_pct(share_top), delta=f"{share_top-share_all:+.1f} pts", delta_color="off")
     c3.metric("Surreprésentation", f"× {ratio:.1f}".replace(".", ","))
 
     comparison = pd.DataFrame(
@@ -105,16 +98,18 @@ def music_tab(data: pd.DataFrame) -> None:
         y=comparison["Groupe"], x=comparison["Musique"], orientation="h",
         name="Musique", marker_color=YOUTUBE_RED,
         text=comparison["Musique"].map(lambda x: f"{x:.1f} %".replace(".", ",")), textposition="inside",
+        insidetextfont=dict(color="white"),
     )
     fig.add_bar(
         y=comparison["Groupe"], x=comparison["Autres catégories"], orientation="h",
         name="Autres catégories", marker_color=LIGHT_GREY,
         text=comparison["Autres catégories"].map(lambda x: f"{x:.1f} %".replace(".", ",")), textposition="inside",
+        insidetextfont=dict(color=NAVY),
     )
     fig.update_layout(barmode="stack", xaxis=dict(range=[0, 100], title="Composition (%)"))
     clean_figure(fig, height=350)
     st.plotly_chart(fig, width="stretch", config={"displayModeBar": False})
-    st.success("Décision : pour maximiser la portée brute, prioriser les formats et collaborations musicales — sans confondre portée et engagement.")
+    decision_callout("Pour maximiser la portée brute, prioriser les formats et collaborations musicales, sans confondre portée et engagement.")
 
 
 def engagement_tab(data: pd.DataFrame) -> None:
@@ -143,15 +138,15 @@ def engagement_tab(data: pd.DataFrame) -> None:
     )
 
     c1, c2, c3 = st.columns(3)
-    c1.metric("Engagement le plus élevé", str(best_engagement["category"]), format_pct(best_engagement["engagement_median"]))
-    c2.metric("Audience médiane la plus forte", str(best_reach["category"]), f"{format_integer(best_reach['vues_medianes'])} vues")
+    c1.metric("Engagement le plus élevé", str(best_engagement["category"]), format_pct(best_engagement["engagement_median"]), delta_color="off")
+    c2.metric("Audience médiane la plus forte", str(best_reach["category"]), f"{format_integer(best_reach['vues_medianes'])} vues", delta_color="off")
     correlation_label = f"{correlation:.2f}".replace(".", ",") if correlation is not None else "n.d."
     c3.metric("Corrélation portée–engagement", correlation_label, help="Corrélation entre les médianes par catégorie ; nécessite au moins deux catégories")
 
     focus = {"Musique", "Tutoriels et style", "Jeux vidéo"}
     by_category["focus"] = by_category["category"].where(by_category["category"].isin(focus), "Autres")
     by_category["label"] = by_category["category"].where(by_category["category"].isin(focus), "")
-    color_map = {"Musique": YOUTUBE_RED, "Tutoriels et style": GREEN, "Jeux vidéo": BLUE, "Autres": GREY}
+    color_map = {"Musique": YOUTUBE_RED, "Tutoriels et style": BLUE, "Jeux vidéo": NAVY, "Autres": GREY}
     fig = px.scatter(
         by_category,
         x="vues_medianes",
@@ -167,7 +162,7 @@ def engagement_tab(data: pd.DataFrame) -> None:
     fig.update_traces(textposition="top center", hovertemplate="<b>%{hovertext}</b><br>Vues médianes : %{x:,.0f}<br>Réactions / 100 vues : %{y:.2f}<br>Vidéos : %{customdata[0]:,.0f}<extra></extra>")
     clean_figure(fig, height=510)
     st.plotly_chart(fig, width="stretch", config={"displayModeBar": False})
-    st.success("Décision : choisir le KPI principal selon l’objectif — portée pour la notoriété, réactions pour la communauté.")
+    decision_callout("Choisir le KPI principal selon l’objectif : la portée pour la notoriété, les réactions pour la communauté.")
 
 
 def country_tab(data: pd.DataFrame) -> None:
@@ -183,7 +178,7 @@ def country_tab(data: pd.DataFrame) -> None:
     overall = float(data["views"].median())
 
     c1, c2, c3 = st.columns(3)
-    c1.metric("Marché au plus fort potentiel", str(high["country"]), f"{format_integer(high['vues_medianes'])} vues médianes")
+    c1.metric("Marché au plus fort potentiel", str(high["country"]), f"{format_integer(high['vues_medianes'])} vues médianes", delta_color="off")
     c2.metric("Écart entre extrêmes", f"× {ratio:.1f}".replace(".", ","))
     c3.metric("Médiane du périmètre", f"{format_integer(overall)} vues")
 
@@ -200,11 +195,11 @@ def country_tab(data: pd.DataFrame) -> None:
             hovertemplate="<b>%{y}</b><br>Vues médianes : %{x:,.0f}<br>Vidéos : %{customdata[0]:,.0f}<extra></extra>",
         )
     )
-    fig.update_layout(xaxis_title="Maximum de vues médian par vidéo", yaxis_title="")
-    fig.update_xaxes(rangemode="tozero")
+    fig.update_layout(xaxis_title="Vues médianes par vidéo", yaxis_title="", margin=dict(l=20, r=90, t=70, b=50))
+    fig.update_xaxes(range=[0, float(by_country["vues_medianes"].max()) * 1.15])
     clean_figure(fig, height=420)
     st.plotly_chart(fig, width="stretch", config={"displayModeBar": False})
-    st.success("Décision : fixer des objectifs et budgets par marché ; une cible unique de vues serait trompeuse.")
+    decision_callout("Fixer des objectifs et des budgets par marché : une cible unique de vues serait trompeuse.")
 
 
 df = load_data()
@@ -221,10 +216,10 @@ if filtered.empty:
     st.stop()
 
 global_filtered = global_snapshot(filtered)
-k1, k2, k3 = st.columns(3)
-k1.metric("Vidéos distinctes", format_integer(global_filtered["video_id"].nunique()))
-k2.metric("Pays sélectionnés", str(filtered["country"].nunique()))
-k3.metric("Vues médianes", format_integer(global_filtered["views"].median()))
+st.caption(
+    f"Périmètre courant : {format_integer(global_filtered['video_id'].nunique())} vidéos distinctes · "
+    f"{filtered['country'].nunique()} pays · {filtered['category'].nunique()} catégories"
+)
 
 tabs = st.tabs(["⏱ Durée", "🎵 Mégasuccès", "💬 Engagement", "🌍 Pays"])
 with tabs[0]:
