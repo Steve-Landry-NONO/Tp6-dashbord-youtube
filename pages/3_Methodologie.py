@@ -7,7 +7,7 @@ from pathlib import Path
 
 import streamlit as st
 
-from utils import inject_global_styles, page_footer
+from utils import inject_global_styles, page_footer, team_byline
 
 
 st.set_page_config(page_title="Méthodologie", page_icon="🧭", layout="wide")
@@ -17,6 +17,7 @@ metadata_path = Path(__file__).resolve().parents[1] / "data" / "metadata.json"
 metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
 
 st.title("🧭 Méthodologie et limites")
+team_byline()
 st.markdown(
     """
     Le dashboard répond à une question de décision : **comment adapter une stratégie de contenu
