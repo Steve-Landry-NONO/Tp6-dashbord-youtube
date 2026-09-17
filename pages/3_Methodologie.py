@@ -7,8 +7,11 @@ from pathlib import Path
 
 import streamlit as st
 
+from utils import inject_global_styles, page_footer
+
 
 st.set_page_config(page_title="Méthodologie", page_icon="🧭", layout="wide")
+inject_global_styles()
 
 metadata_path = Path(__file__).resolve().parents[1] / "data" / "metadata.json"
 metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
@@ -64,3 +67,4 @@ st.info(
     "Les membres doivent pouvoir expliquer les filtres, les agrégations, les KPIs et chaque graphique."
 )
 
+page_footer()
