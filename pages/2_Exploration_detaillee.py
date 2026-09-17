@@ -5,10 +5,11 @@ from __future__ import annotations
 import plotly.express as px
 import streamlit as st
 
-from utils import BLUE, GREY, YOUTUBE_RED, clean_figure, load_data, page_footer, sidebar_filters
+from utils import BLUE, YOUTUBE_RED, clean_figure, inject_global_styles, load_data, page_footer, sidebar_filters
 
 
 st.set_page_config(page_title="Exploration détaillée", page_icon="🔎", layout="wide")
+inject_global_styles()
 
 df = load_data()
 filtered = sidebar_filters(df, key_prefix="detail")
