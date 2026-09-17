@@ -1,0 +1,40 @@
+{
+  "source": "Kaggle — thedevastator/youtube-trending-videos-dataset, version 2",
+  "source_url": "https://www.kaggle.com/datasets/thedevastator/youtube-trending-videos-dataset",
+  "period_start": "2017-11-14",
+  "period_end": "2018-06-14",
+  "raw_rows": 161470,
+  "unique_videos": 55886,
+  "country_video_rows": 63805,
+  "one_day_share_pct": 59.4624,
+  "top_1pct_threshold_views": 8329490,
+  "music_share_all_pct": 7.628,
+  "music_share_top_pct": 59.7496,
+  "countries": [
+    "Canada",
+    "France",
+    "Royaume-Uni",
+    "États-Unis"
+  ],
+  "categories": [
+    "Actualités et politique",
+    "Animaux",
+    "Associations et activisme",
+    "Auto et véhicules",
+    "Autre",
+    "Divertissement",
+    "Films",
+    "Films et animation",
+    "Humour",
+    "Jeux vidéo",
+    "Musique",
+    "Personnalités et blogs",
+    "Science et technologie",
+    "Sport",
+    "Tutoriels et style",
+    "Voyages et événements",
+    "Éducation",
+    "Émissions"
+  ],
+  "preparation_note": "Une ligne correspond à un couple pays + vidéo. Les métriques d'audience proviennent de l'instantané présentant le maximum de vues observé."
+}

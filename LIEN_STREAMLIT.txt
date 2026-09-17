@@ -1,0 +1,4 @@
+Lien public Streamlit : À COMPLÉTER APRÈS LE DÉPLOIEMENT
+
+Procédure détaillée : voir README.md, section « Déployer sur Streamlit Community Cloud ».
+
