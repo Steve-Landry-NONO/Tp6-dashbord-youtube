@@ -1,4 +1,8 @@
-Lien public Streamlit : À COMPLÉTER APRÈS LE DÉPLOIEMENT
+Application Streamlit : https://tp6-dashbord-youtube-ghmbt4sv7joo5kbcy6t6f3.streamlit.app/
+Dépôt GitHub : https://github.com/Steve-Landry-NONO/Tp6-dashbord-youtube
 
-Procédure détaillée : voir README.md, section « Déployer sur Streamlit Community Cloud ».
-
+Groupe :
+- Steve Landry KOUOKAM NONO
+- Stephane DOMI
+- Chantal CAMARA
+- Maeva QUENUM
