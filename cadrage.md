@@ -1,6 +1,6 @@
 # Cadrage — Anatomie des tendances YouTube
 
-**Groupe :** Steve Landry KOUOKAM NONO · Stephane DOMI · Chantal CAMARA · Maeva QUENUM  
+**Groupe :** Steve Landry KOUOKAM NONO · Stephane DOMI · Chantal CAMARA · Maeva QUENUM · Ludovic TUEKAM  
 **Audience cible :** responsable éditorial ou marketing chargé d’arbitrer les formats, les KPI et les marchés d’une chaîne YouTube.
 
 ## Message clé
@@ -32,4 +32,3 @@ La hiérarchie suit la pyramide de Minto : conclusion, preuves, détail. Le roug
 ## Limites
 
 Les données couvrent novembre 2017 à juin 2018 et uniquement des vidéos déjà en tendance. Les écarts observés sont descriptifs et ne prouvent aucune causalité. L’audience correspond au maximum observé dans la période, pas aux vues actuelles.
-
