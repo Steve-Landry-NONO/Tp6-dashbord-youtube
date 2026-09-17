@@ -18,6 +18,14 @@ BLUE = "#2457C5"
 GREY = "#8792A2"
 LIGHT_GREY = "#E7EAF0"
 
+GROUP_MEMBERS = (
+    "Steve Landry KOUOKAM NONO",
+    "Stephane DOMI",
+    "Chantal CAMARA",
+    "Maeva QUENUM",
+    "Ludovic TUEKAM",
+)
+
 
 @st.cache_data(show_spinner="Chargement des données YouTube…")
 def load_data(path: str = str(DATA_PATH)) -> pd.DataFrame:
@@ -201,6 +209,11 @@ def decision_callout(message: str) -> None:
         f'<div class="decision-callout"><strong>Décision</strong> — {escape(message)}</div>',
         unsafe_allow_html=True,
     )
+
+
+def team_byline() -> None:
+    """Display the complete project team consistently on every page."""
+    st.caption("Équipe du projet : " + " · ".join(GROUP_MEMBERS))
 
 
 def page_footer() -> None:
