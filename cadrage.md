@@ -1,6 +1,6 @@
 # Cadrage — Anatomie des tendances YouTube
 
-**Groupe :** Chantal CAMARA · Stéphane DOMI · Maeva QUENUM · Steve Landry KOUOKAM  
+**Groupe :** Steve Landry KOUOKAM NONO · Stephane DOMI · Chantal CAMARA · Maeva QUENUM  
 **Audience cible :** responsable éditorial ou marketing chargé d’arbitrer les formats, les KPI et les marchés d’une chaîne YouTube.
 
 ## Message clé
