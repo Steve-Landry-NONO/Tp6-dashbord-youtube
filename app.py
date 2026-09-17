@@ -22,6 +22,7 @@ from utils import (
     load_data,
     page_footer,
     sidebar_filters,
+    team_byline,
 )
 
 
@@ -206,6 +207,7 @@ df = load_data()
 filtered = sidebar_filters(df)
 
 st.title("▶ Anatomie d’une tendance YouTube")
+team_byline()
 st.markdown(
     "**Les tendances sont brèves, dominées par la musique et très inégales selon les marchés.** "
     "Ce dashboard transforme ces constats en décisions de contenu et de diffusion."
