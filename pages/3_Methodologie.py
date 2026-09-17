@@ -62,9 +62,4 @@ with st.expander("Traçabilité de la source"):
     st.write(f"Période : {metadata['period_start']} au {metadata['period_end']}")
     st.link_button("Consulter la source Kaggle", metadata["source_url"])
 
-st.info(
-    "Usage de l’IA : l’équipe a utilisé une assistance IA pour structurer et relire le code. "
-    "Les membres doivent pouvoir expliquer les filtres, les agrégations, les KPIs et chaque graphique."
-)
-
 page_footer()
